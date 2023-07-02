@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--primary-color: #0ca2eb;
+	--primary-color-2: #2fc3f2;
+	--primary-color-3: #24d5ca;
+	--primary-color-4: #18d39f;
+	--primary-color-5: #f268f5;
+	--primary-gray: #483d57;
+	--primary-gray-2: #7997a8;
+	--primary-gray-3: #edf1f4;
+}
+
+@layer base {
+	body {
+		@apply bg-white;
+	}
+	::-webkit-scrollbar {
+		width: 3px;
+		height: 3px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: var(--primary-gray-3);
+		border-radius: 5px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: var(--primary-color) !important;
+		border-radius: 10px;
+	}
+}
+
+@layer utilities {
+	.f-c {
+		@apply flex justify-center items-center;
+	}
+}
+
+@layer components {
+	.card {
+		@apply w-2/4 lg:w-full h-[250px] bg-white lg:pt-4;
+		h1 {
+			@apply text-center text-xl font-semibold text-primary-gray;
+		}
+	}
+}
