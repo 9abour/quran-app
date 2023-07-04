@@ -1,6 +1,10 @@
+"use client";
+
 import Navbar from "@/components/Navbar/Navbar";
 import "./globals.scss";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { store } from "./rtk/store";
+import { Provider } from "react-redux";
 
 export const metadata = {
 	title: "Quran App",
@@ -19,8 +23,10 @@ export default function RootLayout({
 				</section>
 				<main>
 					<section className="block lg:flex">
-						<Sidebar />
-						{children}
+						<Provider store={store}>
+							<Sidebar />
+							{children}
+						</Provider>
 					</section>
 				</main>
 			</body>

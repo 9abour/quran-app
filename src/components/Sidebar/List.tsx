@@ -6,9 +6,12 @@ import React, { useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Input from "../UI/Input";
+import { useAppSelector } from "@/app/rtk/hooks";
 
 const List = () => {
 	const [searchList, setSearchList] = useState("");
+
+	const list = useAppSelector(state => state.listSlice.list);
 
 	const scheduleContent = (
 		<div className="bg-slate-50 rounded-md p-4 h-[200px]">
@@ -30,21 +33,20 @@ const List = () => {
 	);
 
 	const listContent = (
-		<div className="rounded-md p-4 h-[200px]">
+		<div className="rounded-md p-4 h-[200px] bg-slate-50">
 			<Input
 				type="text"
-				label=""
 				value={searchList}
 				onchange={setSearchList}
 				placeholder="Search..."
 			/>
 			<div className="px-3 mt-3 h-[130px] lg:h-[30rem] overflow-y-scroll bg-slate-50 rounded-md">
-				{Array.from(Array(20)).map(item => (
+				{list.map(item => (
 					<div
-						key={item}
+						key={item.number}
 						className="flex justify-between items-center text-primary-gray-2 p-2 cursor-pointer hover:bg-slate-50 rounded-md transition"
 					>
-						<h3 className="font-semibold">Item</h3>
+						<h3 className="font-semibold">{item.englishName}</h3>
 						<BsArrowRightShort size={25} />
 					</div>
 				))}
