@@ -33,8 +33,11 @@ const listSlice = createSlice({
 
 			state.list = updated;
 		},
+		updateSurahsList: (state, action) => {
+			state.list = action.payload;
+		},
 	},
 });
 
-export const { addSurah, removeSurah } = listSlice.actions;
+export const { addSurah, removeSurah, updateSurahsList } = listSlice.actions;
 export default listSlice.reducer;

@@ -1,11 +1,10 @@
+"use client";
+import ReadCom from "@/components/ReadCom";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const page = () => {
-	return (
-		<div>
-			<h1>Reading Page</h1>
-		</div>
-	);
+	return <ReadCom />;
 };
 
 export default page;

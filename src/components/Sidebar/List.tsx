@@ -2,19 +2,39 @@
 
 import { BsArrowRightShort } from "react-icons/bs";
 import { BiTimeFive } from "react-icons/bi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Input from "../UI/Input";
-import { useAppSelector } from "@/app/rtk/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/rtk/hooks";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { updateSurahsList } from "@/app/rtk/slices/listSlice";
 
 const List = () => {
 	const [searchList, setSearchList] = useState("");
 
 	const list = useAppSelector(state => state.listSlice.list);
 
+	const pathname = usePathname();
+
+	const surahNumber = Number(
+		pathname.split("/")[pathname.split("/").length - 1]
+	);
+
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		// Get surahs list form local storage and insert it to redux state
+		const surahsListFromLS = localStorage.getItem("surahsList");
+
+		if (surahsListFromLS != null) {
+			dispatch(updateSurahsList(JSON.parse(surahsListFromLS)));
+		}
+	}, []);
+
 	const scheduleContent = (
-		<div className="bg-slate-50 rounded-md p-4 h-[200px]">
+		<div className="bg-slate-50 rounded-md p-4 h-full">
 			<>
 				<Button
 					text="9 FEB 21"
@@ -28,34 +48,41 @@ const List = () => {
 					<BiTimeFive size={25} />
 					<p>07:00 AM</p>
 				</span>
+				<Button
+					text="Add Schedule"
+					customStyles="bg-primary-color !text-white mt-8 mx-auto border shadow-sm"
+				/>
 			</>
 		</div>
 	);
 
 	const listContent = (
-		<div className="rounded-md p-4 h-[200px] bg-slate-50">
+		<div className="rounded-md p-4 bg-slate-50 h-full">
 			<Input
 				type="text"
 				value={searchList}
 				onchange={setSearchList}
 				placeholder="Search..."
 			/>
-			<div className="px-3 mt-3 h-[130px] lg:h-[30rem] overflow-y-scroll bg-slate-50 rounded-md">
+			<div className="px-3 mt-3 h-[calc(100%-41.33px)] overflow-y-scroll bg-slate-50 rounded-md">
 				{list.map(item => (
-					<div
+					<Link
+						href={`read/surah/${item.number}`}
 						key={item.number}
-						className="flex justify-between items-center text-primary-gray-2 p-2 cursor-pointer hover:bg-slate-50 rounded-md transition"
+						className={`flex justify-between items-center text-primary-gray-2 p-2 cursor-pointer hover:!text-primary-color ${
+							surahNumber == item.number && "!text-primary-color"
+						} rounded-md transition`}
 					>
 						<h3 className="font-semibold">{item.englishName}</h3>
 						<BsArrowRightShort size={25} />
-					</div>
+					</Link>
 				))}
 			</div>
 		</div>
 	);
 
 	return (
-		<div className="flex lg:flex-col gap-2">
+		<div className="h-full flex lg:flex-col gap-2">
 			<Card
 				title="Schedule"
 				button={
@@ -66,7 +93,6 @@ const List = () => {
 				}
 				content={scheduleContent}
 			/>
-
 			<Card
 				title="List"
 				button={
