@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 
 interface Props {
-	title: string;
-	button: ReactNode;
-	content: ReactNode;
+	title?: string;
+	button?: ReactNode;
+	content?: ReactNode;
 }
 
 const Card = ({ title, button, content }: Props) => {

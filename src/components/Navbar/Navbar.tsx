@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import NavLink from "./NavLink";
 import Button from "../UI/Button";
 import { useMediaQuery } from "react-responsive";
+import Link from "next/link";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +31,9 @@ const Navbar = () => {
 
 	return (
 		<nav className="relative container mx-auto h-[70px] flex justify-between items-center rounded-md px-[1rem] md:px-[5rem] bg-white z-10">
-			<Button text="QURAN" icon={<FaQuran size={25} />} />
+			<Link href="/">
+				<Button text="QURAN" icon={<FaQuran size={25} />} />
+			</Link>
 
 			{isTabletOrMobile && (
 				<Button
@@ -50,11 +53,6 @@ const Navbar = () => {
 				} md:flex transition`}
 			>
 				<NavLink linkName="home" link="/" icon={<AiOutlineHome size={25} />} />
-				<NavLink
-					linkName="read"
-					link="read"
-					icon={<AiOutlineRead size={25} />}
-				/>
 				<NavLink
 					linkName="list"
 					link="list"

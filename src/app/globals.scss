@@ -8,6 +8,7 @@
 	--primary-color-3: #24d5ca;
 	--primary-color-4: #18d39f;
 	--primary-color-5: #f268f5;
+	--primary-color-6: #0ca1eb22;
 	--primary-gray: #483d57;
 	--primary-gray-2: #7997a8;
 	--primary-gray-3: #edf1f4;
@@ -15,6 +16,7 @@
 
 @layer base {
 	body {
+		scroll-behavior: smooth;
 		@apply bg-white;
 	}
 	::-webkit-scrollbar {
@@ -30,6 +32,14 @@
 	::-webkit-scrollbar-thumb {
 		background: var(--primary-color) !important;
 		border-radius: 10px;
+	}
+
+	audio::-webkit-media-controls-panel {
+		background-color: white;
+		@apply rounded-md;
+	}
+	audio::-webkit-media-controls-enclosure {
+		border-radius: 6px;
 	}
 }
 
@@ -110,7 +120,7 @@
 
 @layer components {
 	.card {
-		@apply w-2/4 lg:w-full h-[300px] bg-white lg:pt-4;
+		@apply w-2/4 lg:w-full lg:h-[300px] bg-white;
 		h1 {
 			@apply text-center text-xl font-semibold text-primary-gray;
 		}

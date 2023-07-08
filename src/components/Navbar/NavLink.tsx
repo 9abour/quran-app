@@ -19,7 +19,7 @@ const NavLink = (props: Props) => {
 				(link == currentPathname.slice(1) || link == currentPathname) &&
 				"bg-slate-100 !text-primary-color"
 			}`}
-			href={link}
+			href={`/${link}`}
 		>
 			{icon}
 			<span className={`text-lg font-semibold min-h-full`}>{linkName}</span>

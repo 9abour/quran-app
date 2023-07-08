@@ -8,7 +8,21 @@ import Input from "../UI/Input";
 import { useAppSelector } from "@/app/rtk/hooks";
 import Loading from "../Loading";
 
+export interface AyahType {
+	audio: string;
+	audioSecondary: string[];
+	hizbQuarter: number;
+	juz: number;
+	manzil: number;
+	number: number;
+	numberInSurah: number;
+	page: number;
+	ruku: number;
+	sajda: boolean;
+	text: string;
+}
 export interface SurahType {
+	ayahs?: AyahType[];
 	englishName: string;
 	englishNameTranslation: string;
 	name: string;
@@ -40,12 +54,12 @@ const Center = () => {
 		localStorage.setItem("surahsList", JSON.stringify(surahsList));
 	}, [surahsList]);
 
-	useEffect(() => {
+	const handleChangeSearchValueAndSortOption = useCallback(() => {
 		if (sortBtnActive == "Number") {
 			setSurahsListToShow(surahsListOriginal);
 		} else if (sortBtnActive == "Alphabet") {
-			setSurahsListToShow(prevState => {
-				let sorted: SurahType[] = Object.assign([], prevState);
+			setSurahsListToShow(() => {
+				let sorted: SurahType[] = Object.assign([], surahsListOriginal);
 
 				sorted.sort((a, b) => a.englishName.localeCompare(b.englishName));
 
@@ -54,25 +68,27 @@ const Center = () => {
 		} else {
 			setSurahsListToShow(surahsList);
 		}
-	}, [sortBtnActive]);
+	}, [sortBtnActive, searchValue]);
+
+	useEffect(() => {
+		handleChangeSearchValueAndSortOption();
+	}, [handleChangeSearchValueAndSortOption]);
 
 	const getSearchValueResults = () => {
 		if (searchValue != "") {
 			if (!Number.isInteger(Number(searchValue))) {
 				setSurahsListToShow(
-					surahsListOriginal.filter(surah =>
+					surahsListToShow.filter(surah =>
 						surah.englishName.toLowerCase().includes(searchValue.toLowerCase())
 					)
 				);
 			} else {
 				setSurahsListToShow(
-					surahsListOriginal.filter(surah =>
+					surahsListToShow.filter(surah =>
 						surah.number.toString().includes(searchValue)
 					)
 				);
 			}
-		} else {
-			setSurahsListToShow(surahsListOriginal);
 		}
 	};
 
@@ -81,7 +97,7 @@ const Center = () => {
 	}, [searchValue]);
 
 	return (
-		<div className="w-[calc(100%-32px)] lg:w-[calc(100vw-360px)] h-[calc(100vh-262px)] lg:h-[calc(100vh-70px)] bg-slate-50 m-4 lg:m-0 rounded-md lg:rounded-lg  lg:mt-0 p-4">
+		<div className="w-[calc(100%-32px)] lg:w-[calc(100vw-360px)] h-[calc(100vh-191px)] lg:h-[calc(100vh-70px)] bg-slate-50 m-4 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 p-4">
 			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-2 mx-2">
 				<div className="flex gap-3 mb-3">
 					{["Number", "Alphabet", "In List"].map((sortBtn, index) => (
@@ -103,8 +119,8 @@ const Center = () => {
 				</div>
 			</div>
 			{surahsListToShow.length ? (
-				<div className=" h-[calc(100%-64px)] lg:h-[calc(100vh-162px)] overflow-y-scroll ">
-					<div className="h-fit flex flex-wrap justify-start p-3">
+				<div className="h-[calc(100%-109px)] lg:h-[calc(100vh-162px)] overflow-y-scroll ">
+					<div className="h-fit flex flex-wrap justify-between pr-3">
 						{surahsListToShow.map(surah => (
 							<SurahCard key={surah.number} surah={surah} />
 						))}

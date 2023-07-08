@@ -45,7 +45,7 @@ const SurahCard = (props: PropsType) => {
 	useEffect(() => {}, []);
 
 	return (
-		<div className="w-full h-fit md:w-[200px] xl:w-[250px] py-6 bg-white px-4 m-2 rounded-lg drop-shadow-sm">
+		<div className="w-full h-fit md:w-[200px] xl:w-[220px] py-6 bg-white px-4 m-2 rounded-lg drop-shadow-sm">
 			<div className="flex justify-between items-center mb-3">
 				<span className="w-[35px] h-[35px] f-c bg-[#0ca2eb] bg-opacity-10 rounded-full text-xl font-semibold text-primary-color">
 					{number}
