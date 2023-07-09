@@ -25,7 +25,9 @@ export default function RootLayout({
 					<section className="block lg:flex">
 						<Provider store={store}>
 							<Sidebar />
-							{children}
+							<div className="w-[calc(100%-32px)] lg:w-[calc(100vw-360px)] mx-auto">
+								{children}
+							</div>
 						</Provider>
 					</section>
 				</main>

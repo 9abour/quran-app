@@ -1,15 +1,19 @@
+import { IoMdAdd } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { AyahType, SurahType } from "./Center/Center";
+import { AyahType, SurahType } from "./Home/Index";
 import Image from "next/image";
 import quranImage from "../../public/Quran.png";
 import bismillahImage from "../../public/bismillah.png";
 import ayahIcon from "../../public/ayah-icon.svg";
 import Button from "./UI/Button";
 import Link from "next/link";
+import Loading from "./Loading";
+import { useAppDispatch, useAppSelector } from "@/app/rtk/hooks";
+import { addSchedule } from "@/app/rtk/slices/schedule";
 
 const ReadCom = () => {
 	const pathname = usePathname();
@@ -37,9 +41,13 @@ const ReadCom = () => {
 		fetchSurah();
 	}, [fetchSurah]);
 
+	const state = useAppSelector(state => state.scheduleSlice);
+	const dispatch = useAppDispatch();
+	console.log(state);
+
 	return (
 		<div className="container mx-auto px-4 lg:py-14">
-			{surah && (
+			{surah ? (
 				<>
 					<div className="flex justify-between items-center bg-gradient-to-l from-primary-color-5 to-primary-color max-w-[70rem] w-full h-40 rounded-tl-lg rounded-tr-lg mx-auto text-white p-4">
 						<div className="p-3">
@@ -116,9 +124,9 @@ const ReadCom = () => {
 								</Fragment>
 							))}
 						</div>
-						<div className="relative border-t-2 p-4 block md:flex justify-between items-center bg-gradient-to-r from-primary-color-5 to-primary-color">
+						<div className="relative border-t-2 p-4 flex flex-col-reverse md:flex-row justify-between items-center gap-4 md:gap-12 bg-gradient-to-r from-primary-color-5 to-primary-color">
 							<div className="absolute w-full h-[4em] left-0 top-[-66px] bg-gradient-to-t from-primary-gray z-10" />
-							<div className="flex items-center gap-2 w-6/12">
+							<div className="w-fit flex items-center  gap-2 ">
 								<Link
 									href={
 										surahNumber <= 1 ? "/" : `/read/surah/${surahNumber - 1}`
@@ -127,7 +135,7 @@ const ReadCom = () => {
 									<Button
 										text="Prev"
 										icon={<IoIosArrowBack />}
-										customStyles="bg-white !text-primary-color border px-8 py-2 text-xl"
+										customStyles="bg-white !text-primary-color border px-4 py-2"
 									/>
 								</Link>
 								<Link
@@ -138,20 +146,38 @@ const ReadCom = () => {
 									<Button
 										text="Next"
 										icon={<IoIosArrowForward />}
-										customStyles="bg-white !text-primary-color border px-8 py-2 text-xl flex-row-reverse"
+										customStyles="bg-white !text-primary-color border px-4 py-2 flex-row-reverse"
 									/>
 								</Link>
 							</div>
-							<div className="w-full h-[45px] md:w-6/12">
+							<div className="w-full h-[45px] flex items-center gap-2">
 								<audio
 									className="w-full h-full"
 									src={`${currentAyah?.audio}`}
 									controls
 								/>
+
+								<Button
+									text="Schedule"
+									icon={<IoMdAdd size={25} />}
+									customStyles="!text-primary-color bg-white"
+									onclick={() =>
+										dispatch(
+											addSchedule({
+												ayah: currentAyah,
+												date: "9 FEB 21",
+												text: `Juz ${currentAyah?.juz}`,
+												time: "07:00 Am",
+											})
+										)
+									}
+								/>
 							</div>
 						</div>
 					</div>
 				</>
+			) : (
+				<Loading />
 			)}
 		</div>
 	);

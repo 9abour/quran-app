@@ -31,11 +31,12 @@ export interface SurahType {
 	revelationType: string;
 }
 
-const Center = () => {
+const Home = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [sortBtnActive, setSortBtnActive] = useState("Number");
 	const [surahsListOriginal, setSurahsListOriginal] = useState<SurahType[]>([]);
 	const [surahsListToShow, setSurahsListToShow] = useState<SurahType[]>([]);
+	const [searchResults, setSearchResults] = useState<SurahType[]>([]);
 
 	const surahsList = useAppSelector(state => state.listSlice.list);
 
@@ -54,7 +55,7 @@ const Center = () => {
 		localStorage.setItem("surahsList", JSON.stringify(surahsList));
 	}, [surahsList]);
 
-	const handleChangeSearchValueAndSortOption = useCallback(() => {
+	const handleSelectedSortOption = useCallback(() => {
 		if (sortBtnActive == "Number") {
 			setSurahsListToShow(surahsListOriginal);
 		} else if (sortBtnActive == "Alphabet") {
@@ -68,36 +69,35 @@ const Center = () => {
 		} else {
 			setSurahsListToShow(surahsList);
 		}
-	}, [sortBtnActive, searchValue]);
+	}, [sortBtnActive]);
 
 	useEffect(() => {
-		handleChangeSearchValueAndSortOption();
-	}, [handleChangeSearchValueAndSortOption]);
+		handleSelectedSortOption();
+	}, [handleSelectedSortOption]);
 
-	const getSearchValueResults = () => {
-		if (searchValue != "") {
-			if (!Number.isInteger(Number(searchValue))) {
-				setSurahsListToShow(
-					surahsListToShow.filter(surah =>
-						surah.englishName.toLowerCase().includes(searchValue.toLowerCase())
-					)
-				);
-			} else {
-				setSurahsListToShow(
-					surahsListToShow.filter(surah =>
-						surah.number.toString().includes(searchValue)
-					)
-				);
-			}
+	useEffect(() => {
+		if (!Number.isInteger(Number(searchValue))) {
+			setSearchResults(
+				surahsListToShow.filter(surah =>
+					surah.englishName.toLowerCase().includes(searchValue.toLowerCase())
+				)
+			);
+		} else {
+			setSearchResults(
+				surahsListToShow.filter(surah =>
+					surah.number.toString().includes(searchValue)
+				)
+			);
 		}
-	};
-
-	useEffect(() => {
-		getSearchValueResults();
 	}, [searchValue]);
 
+	const returnList = (): SurahType[] => {
+		if (searchValue == "") return surahsListToShow;
+		else return searchResults;
+	};
+
 	return (
-		<div className="w-[calc(100%-32px)] lg:w-[calc(100vw-360px)] h-[calc(100vh-191px)] lg:h-[calc(100vh-70px)] bg-slate-50 m-4 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 p-4">
+		<div className="h-[calc(100vh-191px)] lg:h-[calc(100vh-70px)] bg-slate-50 m-4 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 p-4">
 			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-2 mx-2">
 				<div className="flex gap-3 mb-3">
 					{["Number", "Alphabet", "In List"].map((sortBtn, index) => (
@@ -121,7 +121,7 @@ const Center = () => {
 			{surahsListToShow.length ? (
 				<div className="h-[calc(100%-109px)] lg:h-[calc(100vh-162px)] overflow-y-scroll ">
 					<div className="h-fit flex flex-wrap justify-between pr-3">
-						{surahsListToShow.map(surah => (
+						{returnList().map(surah => (
 							<SurahCard key={surah.number} surah={surah} />
 						))}
 					</div>
@@ -138,4 +138,4 @@ const Center = () => {
 	);
 };
 
-export default Center;
+export default Home;

@@ -11,7 +11,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { updateSurahsList } from "@/app/rtk/slices/listSlice";
 import axios from "axios";
-import { SurahType } from "../Center/Center";
+import { SurahType } from "../Home/Index";
 
 interface AyahOfTheDayType {
 	code: number;
@@ -42,12 +42,13 @@ interface AyahOfTheDayType {
 }
 
 const List = () => {
-	const [searchList, setSearchList] = useState("");
+	const [searchListValue, setSearchListValue] = useState("");
 	const [ayahOfTheDay, setAyahOfTheDay] = useState<AyahOfTheDayType | null>(
 		null
 	);
 
 	const list = useAppSelector(state => state.listSlice.list);
+	const [listToShow, setListToShow] = useState<SurahType[]>(list && list);
 
 	const pathname = usePathname();
 
@@ -68,8 +69,6 @@ const List = () => {
 		setAyahOfTheDayFunc();
 	}, []);
 
-	const today = new Date().getUTCDate();
-
 	const randomAyahNumber = Math.floor(Math.random() * 6235);
 
 	async function fetchAyah() {
@@ -85,6 +84,8 @@ const List = () => {
 	}
 
 	const setAyahOfTheDayFunc = () => {
+		const today = new Date().getUTCDate();
+
 		const dayFromLS = localStorage.getItem("theDay");
 		const ayahOfTheDayFromLS = localStorage.getItem("ayahOfTheDay");
 
@@ -102,8 +103,21 @@ const List = () => {
 		}
 	};
 
+	useEffect(() => {
+		const searchResults = list.filter(surah =>
+			surah.englishName.toLowerCase().includes(searchListValue.toLowerCase())
+		);
+		setListToShow(searchResults);
+	}, [searchListValue]);
+
+	useEffect(() => {
+		if (list) {
+			setListToShow(list);
+		}
+	}, [list]);
+
 	const scheduleContent = (
-		<div className="h-full hidden lg:block">
+		<div className="hidden lg:block">
 			<div className="bg-slate-50 rounded-md p-4">
 				<Button
 					text="9 FEB 21"
@@ -120,29 +134,29 @@ const List = () => {
 			</div>
 			<Button
 				text="Add Schedule"
-				customStyles="bg-primary-color !text-white my-2 mx-auto border shadow-sm"
+				customStyles="bg-primary-color !text-white mt-2 mx-auto border shadow-sm"
 			/>
 		</div>
 	);
 
 	const listContent = (
-		<div className="h-full rounded-md p-4 bg-slate-50 hidden lg:block">
+		<div className="h-[calc(100%-61px)] rounded-md hidden lg:block">
 			<Input
 				type="text"
-				value={searchList}
-				onchange={setSearchList}
+				value={searchListValue}
+				onchange={setSearchListValue}
 				placeholder="Search..."
 			/>
-			<div className="px-3 mt-3 h-[calc(100%-41.33px)] overflow-y-scroll bg-slate-50 rounded-md">
-				{list.map(item => (
+			<div className="h-[280px] px-3 overflow-y-scroll bg-slate-50 rounded-md">
+				{listToShow.map(surah => (
 					<Link
-						href={`/read/surah/${item.number}`}
-						key={item.number}
+						href={`/read/surah/${surah.number}`}
+						key={surah.number}
 						className={`flex justify-between items-center text-primary-gray-2 p-2 cursor-pointer hover:!text-primary-color ${
-							surahNumber == item.number && "!text-primary-color"
+							surahNumber == surah.number && "!text-primary-color"
 						} rounded-md transition`}
 					>
-						<h3 className="font-semibold">{item.englishName}</h3>
+						<h3 className="font-semibold">{surah.englishName}</h3>
 						<BsArrowRightShort size={25} />
 					</Link>
 				))}
@@ -151,7 +165,7 @@ const List = () => {
 	);
 
 	return (
-		<div className="flex lg:flex-col gap-2 lg:[&>div:not(:last-child)]:border-b-2">
+		<div className="flex-col lg:flex-col gap-2 lg:[&>div:not(:last-child)]:pb-3">
 			<Card
 				title="Schedule"
 				button={
@@ -162,20 +176,24 @@ const List = () => {
 				}
 				content={scheduleContent}
 			/>
-			<Card
-				title="List"
-				button={
-					<Link href={`/list`}>
-						<Button
-							text="see all"
-							customStyles="!bg-transparent hover:!bg-transparent !text-primary-gray hover:!text-primary"
-						/>
-					</Link>
-				}
-				content={listContent}
-			/>
+			<hr />
+			{listToShow.length > 0 && (
+				<Card
+					title="List"
+					button={
+						<Link href={`/list`}>
+							<Button
+								text="see all"
+								customStyles="!bg-transparent hover:!bg-transparent !text-primary-gray hover:!text-primary"
+							/>
+						</Link>
+					}
+					content={listContent}
+				/>
+			)}
+			<hr />
 			{ayahOfTheDay?.status == "OK" && (
-				<div className="h-[300px] flex flex-col justify-between mx-12 p-4 mt-16 bg-primary-color rounded-md">
+				<div className="max-h-[300px] flex flex-col justify-between mx-12 mt-3 p-4 bg-primary-color rounded-md">
 					<div>
 						<h3 className="text-sm text-center text-white text-opacity-50 font-semibold uppercase">
 							Ayah of the day

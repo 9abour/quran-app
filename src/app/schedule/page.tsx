@@ -1,7 +1,8 @@
+import Index from "@/components/Schedule/Index";
 import React from "react";
 
 const page = () => {
-	return <div>Hello</div>;
+	return <Index />;
 };
 
 export default page;

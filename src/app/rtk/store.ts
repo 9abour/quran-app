@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import listSlice from "./slices/listSlice";
+import scheduleSlice from "./slices//schedule";
 
 export const store = configureStore({
 	reducer: {
 		listSlice,
+		scheduleSlice,
 	},
 });
 

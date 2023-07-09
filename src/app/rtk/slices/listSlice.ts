@@ -1,4 +1,4 @@
-import { SurahType } from "@/components/Center/Center";
+import { SurahType } from "@/components/Home/Index";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface InitialStateType {

@@ -120,7 +120,7 @@
 
 @layer components {
 	.card {
-		@apply w-2/4 lg:w-full lg:h-[300px] bg-white;
+		@apply w-full lg:max-h-[400px] bg-white;
 		h1 {
 			@apply text-center text-xl font-semibold text-primary-gray;
 		}

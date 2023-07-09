@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { SurahType } from "../Center/Center";
+import { SurahType } from "../Home/Index";
 import Button from "./Button";
 import Link from "next/link";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
@@ -67,7 +67,6 @@ const SurahCard = (props: PropsType) => {
 					customStyles="hover:bg-transparent"
 				/>
 			</div>
-
 			<Link
 				href={`read/surah/${number}`}
 				className="w-full font-semibold [&>*]:hover:!text-primary-color"

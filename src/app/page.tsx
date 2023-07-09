@@ -1,9 +1,5 @@
-import Center from "@/components/Center/Center";
+import Index from "@/components/Home/Index";
 
 export default function Home() {
-	return (
-		<div>
-			<Center />
-		</div>
-	);
+	return <Index />;
 }
