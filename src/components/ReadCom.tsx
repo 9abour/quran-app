@@ -3,7 +3,13 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
 import { usePathname } from "next/navigation";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, {
+	Fragment,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { AyahType, SurahType } from "./Home/Index";
 import Image from "next/image";
 import quranImage from "../../public/Quran.png";
@@ -13,7 +19,7 @@ import Button from "./UI/Button";
 import Link from "next/link";
 import Loading from "./Loading";
 import { useAppDispatch, useAppSelector } from "@/app/rtk/hooks";
-import { addSchedule } from "@/app/rtk/slices/schedule";
+import { addSchedule } from "@/app/rtk/slices/scheduleSlice";
 
 const ReadCom = () => {
 	const pathname = usePathname();
@@ -23,6 +29,37 @@ const ReadCom = () => {
 	const [currentAyah, setCurrentAyah] = useState<AyahType | null>(null);
 	const [currentAyahNumber, setCurrentAyahNumber] = useState(1);
 
+	let surahTextContainerRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		setTimeout(() => {
+			const ayahIsActive: HTMLElement | null | undefined =
+				surahTextContainerRef.current?.querySelector(".active");
+			console.log(surahTextContainerRef);
+
+			if (
+				ayahIsActive?.offsetTop != null &&
+				surahTextContainerRef.current != null
+			) {
+				let scrollLimit =
+					ayahIsActive?.offsetTop -
+					surahTextContainerRef.current?.offsetHeight -
+					surahTextContainerRef.current?.offsetHeight / 2;
+				const scrollInterval = setInterval(() => {
+					if (
+						surahTextContainerRef.current != null &&
+						surahTextContainerRef.current.scrollTop <= scrollLimit
+					) {
+						surahTextContainerRef.current.scrollTop =
+							surahTextContainerRef.current.scrollTop += 300;
+					} else {
+						clearInterval(scrollInterval);
+					}
+				}, 10);
+			}
+		}, 1000);
+	}, []);
+
 	const fetchSurah = useCallback(async () => {
 		try {
 			const resp = await axios.get(
@@ -30,8 +67,14 @@ const ReadCom = () => {
 			);
 			const { data } = resp;
 			setSurah(data.data);
-			setCurrentAyah(data.data.ayahs[0]);
-			setCurrentAyahNumber(data.data.ayahs[0].number);
+			const lastAyahFromLS = localStorage.getItem("lastAyah");
+
+			if (lastAyahFromLS != null) {
+				setLastAyah();
+			} else {
+				setCurrentAyah(data.data.ayahs[0]);
+				setCurrentAyahNumber(data.data.ayahs[0].number);
+			}
 		} catch {
 			console.log(Error);
 		}
@@ -41,15 +84,59 @@ const ReadCom = () => {
 		fetchSurah();
 	}, [fetchSurah]);
 
+	useEffect(() => {
+		const lastAyahFromLS = localStorage.getItem("lastAyah");
+
+		if (currentAyah) {
+			if (lastAyahFromLS !== null) {
+				const lastAyahObjFromLS = JSON.parse(lastAyahFromLS);
+				const updated = lastAyahObjFromLS.map((item: any) => {
+					if (item.surahNumber == surah?.number) {
+						return {
+							surahNumber,
+							ayah: currentAyah,
+						};
+					} else {
+						return item;
+					}
+				});
+
+				localStorage.setItem("lastAyah", JSON.stringify(updated));
+			} else {
+				localStorage.setItem(
+					"lastAyah",
+					JSON.stringify([
+						{
+							surahNumber: surah?.number,
+							ayah: currentAyah,
+						},
+					])
+				);
+			}
+		}
+	}, [currentAyah]);
+
+	const setLastAyah = () => {
+		const lastAyahFromLS = localStorage.getItem("lastAyah");
+
+		if (lastAyahFromLS != null) {
+			const lastAyahObjFromLS = JSON.parse(lastAyahFromLS);
+
+			if (lastAyahObjFromLS.surahNumber == surahNumber) {
+				setCurrentAyah(lastAyahObjFromLS.ayah);
+				setCurrentAyahNumber(lastAyahObjFromLS.ayah.number);
+			}
+		}
+	};
+
 	const state = useAppSelector(state => state.scheduleSlice);
 	const dispatch = useAppDispatch();
-	console.log(state);
 
 	return (
-		<div className="container mx-auto px-4 lg:py-14">
+		<div className="container mx-auto px-0 lg:px-4 lg:py-14">
 			{surah ? (
 				<>
-					<div className="flex justify-between items-center bg-gradient-to-l from-primary-color-5 to-primary-color max-w-[70rem] w-full h-40 rounded-tl-lg rounded-tr-lg mx-auto text-white p-4">
+					<div className="flex justify-between items-center bg-gradient-to-l from-primary-color-5 to-primary-color max-w-[70rem] w-full h-40 mx-auto text-white p-4">
 						<div className="p-3">
 							<h2 className="text-2xl font-semibold">
 								{surah?.name} - {surah?.englishName}
@@ -94,16 +181,18 @@ const ReadCom = () => {
 							/>
 						</div>
 						<div
-							className="min-h-[20rem] max-h-[35rem] text-2xl text-center font-semibold text-primary-gray mt-8 overflow-y-scroll bg-gradient-to-t from-primary-color-6 pb-[4rem]"
+							ref={surahTextContainerRef}
+							className="min-h-[20rem] max-h-[35rem] text-2xl text-center font-semibold text-primary-gray mt-8 overflow-y-scroll bg-gradient-to-t from-primary-color-6"
 							dir="rtl"
 						>
 							{surah.ayahs?.map((ayah: AyahType) => (
 								<Fragment key={ayah.number}>
 									<h1
 										className={`inline-block h-[50px] ${
-											currentAyahNumber == ayah.number && "text-primary-color"
+											currentAyahNumber == ayah.number &&
+											"text-primary-color active"
 										} hover:text-primary-color cursor-pointer`}
-										onClick={() => {
+										onClick={async () => {
 											setCurrentAyahNumber(ayah.number);
 											setCurrentAyah(ayah);
 										}}
@@ -125,8 +214,7 @@ const ReadCom = () => {
 							))}
 						</div>
 						<div className="relative border-t-2 p-4 flex flex-col-reverse md:flex-row justify-between items-center gap-4 md:gap-12 bg-gradient-to-r from-primary-color-5 to-primary-color">
-							<div className="absolute w-full h-[4em] left-0 top-[-66px] bg-gradient-to-t from-primary-gray z-10" />
-							<div className="w-fit flex items-center  gap-2 ">
+							<div className="w-fit flex items-center gap-2 ">
 								<Link
 									href={
 										surahNumber <= 1 ? "/" : `/read/surah/${surahNumber - 1}`
@@ -165,7 +253,7 @@ const ReadCom = () => {
 										dispatch(
 											addSchedule({
 												ayah: currentAyah,
-												date: "9 FEB 21",
+												date: "9 F 21",
 												text: `Juz ${currentAyah?.juz}`,
 												time: "07:00 Am",
 											})

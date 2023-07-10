@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import listSlice from "./slices/listSlice";
-import scheduleSlice from "./slices//schedule";
+import scheduleSlice from "./slices/scheduleSlice";
 
 export const store = configureStore({
 	reducer: {

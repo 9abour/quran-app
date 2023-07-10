@@ -147,7 +147,7 @@ const List = () => {
 				onchange={setSearchListValue}
 				placeholder="Search..."
 			/>
-			<div className="h-[280px] px-3 overflow-y-scroll bg-slate-50 rounded-md">
+			<div className="h-[280px] px-3 overflow-y-scroll bg-slate-50 rounded-md mt-3">
 				{listToShow.map(surah => (
 					<Link
 						href={`/read/surah/${surah.number}`}

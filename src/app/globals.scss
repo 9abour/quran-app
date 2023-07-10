@@ -14,6 +14,10 @@
 	--primary-gray-3: #edf1f4;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 @layer base {
 	body {
 		scroll-behavior: smooth;
@@ -120,7 +124,7 @@
 
 @layer components {
 	.card {
-		@apply w-full lg:max-h-[400px] bg-white;
+		@apply w-full lg:max-h-[450px] bg-white;
 		h1 {
 			@apply text-center text-xl font-semibold text-primary-gray;
 		}
