@@ -3,11 +3,9 @@
 @tailwind utilities;
 
 :root {
-	--primary-color: #0ca2eb;
-	--primary-color-2: #2fc3f2;
-	--primary-color-3: #24d5ca;
+	--primary-color: #0e9f6e;
 	--primary-color-4: #18d39f;
-	--primary-color-5: #f268f5;
+	--primary-color-5: #18d39f;
 	--primary-color-6: #0ca1eb22;
 	--primary-gray: #483d57;
 	--primary-gray-2: #7997a8;
@@ -21,7 +19,7 @@ html {
 @layer base {
 	body {
 		scroll-behavior: smooth;
-		@apply bg-white;
+		@apply h-screen bg-white;
 	}
 	::-webkit-scrollbar {
 		width: 3px;
@@ -50,6 +48,10 @@ html {
 @layer utilities {
 	.f-c {
 		@apply flex justify-center items-center;
+	}
+
+	.amiri-family {
+		font-family: "Amiri Quran", serif;
 	}
 
 	// Loading

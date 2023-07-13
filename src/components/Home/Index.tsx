@@ -6,7 +6,7 @@ import SurahCard from "../UI/SurahCard";
 import SortButton from "../UI/SortButton";
 import Input from "../UI/Input";
 import { useAppSelector } from "@/app/rtk/hooks";
-import Loading from "../Loading";
+import Loading from "../UI/Loading";
 
 export interface AyahType {
 	audio: string;
@@ -97,9 +97,9 @@ const Home = () => {
 	};
 
 	return (
-		<div className="h-[calc(100vh-191px)] lg:h-[calc(100vh-70px)] bg-slate-50 m-4 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 p-4">
-			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-2 mx-2">
-				<div className="flex gap-3 mb-3">
+		<div className="w-full h-full bg-slate-50 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 px-4">
+			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-2 mr-3">
+				<div className="flex gap-3 my-3">
 					{["Number", "Alphabet", "In List"].map((sortBtn, index) => (
 						<SortButton
 							onclick={() => setSortBtnActive(sortBtn)}
@@ -120,7 +120,7 @@ const Home = () => {
 			</div>
 			{surahsListToShow.length ? (
 				<div className="h-[calc(100%-109px)] lg:h-[calc(100vh-162px)] overflow-y-scroll ">
-					<div className="h-fit flex flex-wrap justify-between pr-3">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 justify-between gap-3 pr-3 [&:last-child]:mb-3">
 						{returnList().map(surah => (
 							<SurahCard key={surah.number} surah={surah} />
 						))}

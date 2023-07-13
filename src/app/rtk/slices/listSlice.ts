@@ -36,8 +36,12 @@ const listSlice = createSlice({
 		updateSurahsList: (state, action) => {
 			state.list = action.payload;
 		},
+		updateSurahsListLS: state => {
+			localStorage.setItem("surahsList", JSON.stringify(state.list));
+		},
 	},
 });
 
-export const { addSurah, removeSurah, updateSurahsList } = listSlice.actions;
+export const { addSurah, removeSurah, updateSurahsList, updateSurahsListLS } =
+	listSlice.actions;
 export default listSlice.reducer;

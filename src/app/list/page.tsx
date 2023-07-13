@@ -1,9 +1,9 @@
-import React from "react";
-import { useAppSelector } from "../rtk/hooks";
-import Index from "@/components/List/Index";
+import { lazy } from "react";
+
+const ListCom = lazy(() => import("@/components/List/Index"));
 
 const page = () => {
-	return <Index />;
+	return <ListCom />;
 };
 
 export default page;

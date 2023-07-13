@@ -28,7 +28,7 @@ const SurahCard = (props: PropsType) => {
 		dispatch(removeSurah(surah));
 	};
 
-	const checkIfSurahIsDuplicated = useCallback((): boolean => {
+	const checkIfSurahInTheList = useCallback((): boolean => {
 		let isDuplicated = false;
 
 		state.list.map(
@@ -39,13 +39,11 @@ const SurahCard = (props: PropsType) => {
 	}, [state.list, number]);
 
 	useEffect(() => {
-		setIsSurahInList(checkIfSurahIsDuplicated());
-	}, [checkIfSurahIsDuplicated]);
-
-	useEffect(() => {}, []);
+		setIsSurahInList(checkIfSurahInTheList());
+	}, [checkIfSurahInTheList]);
 
 	return (
-		<div className="w-full h-fit md:w-[200px] xl:w-[220px] py-6 bg-white px-4 m-2 rounded-lg drop-shadow-sm">
+		<div className="w-full py-6 bg-white px-4 rounded-lg drop-shadow-sm">
 			<div className="flex justify-between items-center mb-3">
 				<span className="w-[35px] h-[35px] f-c bg-[#0ca2eb] bg-opacity-10 rounded-full text-xl font-semibold text-primary-color">
 					{number}
@@ -59,7 +57,7 @@ const SurahCard = (props: PropsType) => {
 					text=""
 					icon={
 						isSurahInList ? (
-							<AiFillHeart size={28} color="#0ca2eb" />
+							<AiFillHeart size={28} className="text-primary-color" />
 						) : (
 							<AiOutlineHeart size={28} />
 						)
@@ -71,7 +69,9 @@ const SurahCard = (props: PropsType) => {
 				href={`read/surah/${number}`}
 				className="w-full font-semibold [&>*]:hover:!text-primary-color"
 			>
-				<h3 className="text-end text-xl text-primary-gray">{name}</h3>
+				<h3 className="text-end text-xl text-primary-gray amiri-family">
+					{name}
+				</h3>
 				<h4 className="text-start text-lg text-primary-gray-2">
 					{englishName}
 				</h4>

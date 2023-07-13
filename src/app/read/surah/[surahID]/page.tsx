@@ -1,6 +1,6 @@
-"use client";
-import ReadCom from "@/components/ReadCom";
-import React from "react";
+import React, { lazy } from "react";
+
+const ReadCom = lazy(() => import("@/components/ReadCom"));
 
 const page = () => {
 	return <ReadCom />;

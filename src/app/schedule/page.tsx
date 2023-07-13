@@ -1,8 +1,9 @@
-import Index from "@/components/Schedule/Index";
-import React from "react";
+import React, { lazy } from "react";
+
+const ScheduleCom = lazy(() => import("@/components/Schedule/Index"));
 
 const page = () => {
-	return <Index />;
+	return <ScheduleCom />;
 };
 
 export default page;

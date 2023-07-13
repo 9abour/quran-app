@@ -25,46 +25,47 @@ const Navbar = () => {
 		}
 	}, [linksRef.current?.offsetHeight]);
 
-	useEffect(() => {
-		setIsMenuOpen(isTabletOrMobile && false);
-	}, [isTabletOrMobile]);
-
 	return (
-		<nav className="relative container mx-auto h-[70px] flex justify-between items-center rounded-md px-[1rem] md:px-[5rem] bg-white z-10">
-			<Link href="/">
-				<Button text="QURAN" icon={<FaQuran size={25} />} />
-			</Link>
+		<>
+			<nav className="relative container mx-auto h-[70px] flex justify-between items-center rounded-md px-[1rem] md:px-[5rem] bg-white z-10">
+				<Link href="/">
+					<Button text="QURAN" icon={<FaQuran size={25} />} />
+				</Link>
 
-			{isTabletOrMobile && (
 				<Button
 					text=""
 					icon={
 						isMenuOpen ? <CgClose size={25} /> : <CgMenuLeftAlt size={25} />
 					}
 					onclick={() => setIsMenuOpen(!isMenuOpen)}
+					customStyles="visible md:hidden"
 				/>
-			)}
-			<ul
-				ref={linksRef}
-				className={`items-center gap-4 ${
-					isMenuOpen
-						? `absolute w-full h-[${navLinksHeight}] left-0 top-[70px] flex-row [&>a]:w-full bg-white rounded-md z-0`
-						: "hidden"
-				} md:flex transition`}
-			>
-				<NavLink linkName="home" link="/" icon={<AiOutlineHome size={25} />} />
-				<NavLink
-					linkName="list"
-					link="list"
-					icon={<AiOutlineUnorderedList size={25} />}
-				/>
-				<NavLink
-					linkName="schedule"
-					link="schedule"
-					icon={<AiOutlineSchedule size={25} />}
-				/>
-			</ul>
-		</nav>
+				<ul
+					ref={linksRef}
+					className={`items-center gap-4 ${
+						isMenuOpen
+							? `absolute w-full h-[${navLinksHeight}] left-0 top-[70px] flex-row [&>a]:w-full bg-white rounded-md z-0`
+							: "hidden"
+					} md:flex transition`}
+				>
+					<NavLink
+						linkName="home"
+						link="/"
+						icon={<AiOutlineHome size={25} />}
+					/>
+					<NavLink
+						linkName="list"
+						link="list"
+						icon={<AiOutlineUnorderedList size={25} />}
+					/>
+					<NavLink
+						linkName="schedule"
+						link="schedule"
+						icon={<AiOutlineSchedule size={25} />}
+					/>
+				</ul>
+			</nav>
+		</>
 	);
 };
 

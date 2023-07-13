@@ -1,11 +1,10 @@
-import { AyahType } from "@/components/Home/Index";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface ScheduleType {
-	surah: AyahType;
 	date: string;
 	text: string;
 	time: string;
+	completed: boolean;
 }
 
 interface initialState {
@@ -25,20 +24,60 @@ const scheduleSlice = createSlice({
 			const scheduleToAdd: ScheduleType = action.payload;
 
 			state.scheduleList.map((schedule: ScheduleType) => {
-				if (schedule.surah.number == scheduleToAdd.surah.number) {
+				if (schedule.text == scheduleToAdd.text) {
 					isDuplicated = true;
 				}
 			});
 
 			if (!isDuplicated) {
 				state.scheduleList.push(action.payload);
-				console.log(action.payload);
+				localStorage.setItem(
+					"scheduleList",
+					JSON.stringify(state.scheduleList)
+				);
 			}
 		},
-		removeSchedule: () => {},
-		getSchedule: () => {},
+		removeSchedule: (state, action) => {
+			const itemToRemove = action.payload;
+
+			const updated = state.scheduleList.filter(
+				item => item.text != itemToRemove
+			);
+
+			state.scheduleList = updated;
+		},
+		setScheduleFromLS: state => {
+			const scheduleListFromLS = localStorage.getItem("scheduleList");
+
+			if (scheduleListFromLS != null) {
+				state.scheduleList = JSON.parse(scheduleListFromLS);
+			}
+		},
+		updateScheduleListToLS: state => {
+			localStorage.setItem("scheduleList", JSON.stringify(state.scheduleList));
+		},
+		setCompletedSchedule: (state, action) => {
+			const updated = state.scheduleList.map(item => {
+				if (item.text == action.payload) {
+					return {
+						...item,
+						completed: !item.completed,
+					};
+				} else {
+					return item;
+				}
+			});
+
+			state.scheduleList = updated;
+		},
 	},
 });
 
-export const { addSchedule } = scheduleSlice.actions;
+export const {
+	addSchedule,
+	removeSchedule,
+	setScheduleFromLS,
+	setCompletedSchedule,
+	updateScheduleListToLS,
+} = scheduleSlice.actions;
 export default scheduleSlice.reducer;
