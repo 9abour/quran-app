@@ -13,7 +13,7 @@
   - Search
   - Button to read
 
-- Ayah evry single day 🔁
+- Ayah every single day 🔁
   - Button to read
 
 - Surahs List 📃
