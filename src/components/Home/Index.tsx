@@ -107,7 +107,7 @@ const Home = () => {
 
 	return (
 		<div className="w-full h-full bg-slate-50 lg:m-0 rounded-md lg:rounded-lg lg:mt-0 px-4">
-			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-2 mr-3">
+			<div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center mr-3">
 				<div className="flex gap-3 my-3">
 					{["Number", "Alphabet", "In List"].map((sortBtn, index) => (
 						<SortButton
@@ -118,7 +118,7 @@ const Home = () => {
 						/>
 					))}
 				</div>
-				<div className="w-full sm:w-[250px] md:w-[300px] xl:w-[500px]">
+				<div className="w-full sm:w-[250px] md:w-[300px] xl:w-[500px] mt-3 sm:mt-0">
 					<Input
 						type="text"
 						value={searchValue}
@@ -128,7 +128,7 @@ const Home = () => {
 				</div>
 			</div>
 			{surahsListToShow.length ? (
-				<div className="h-[calc(100%-109px)] lg:h-[calc(100vh-162px)] overflow-y-scroll ">
+				<div className="h-[calc(100%-109px)] lg:h-[calc(100vh-162px)] overflow-y-scroll">
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 justify-between gap-3 pr-3 [&:last-child]:mb-3">
 						{returnList().map(surah => (
 							<SurahCard key={surah.number} surah={surah} />
@@ -143,7 +143,7 @@ const Home = () => {
 			) : isLoading ? (
 				<Loading />
 			) : (
-				<h2 className="text-center">No items!</h2>
+				<h2 className="text-center py-6">No items!</h2>
 			)}
 		</div>
 	);
