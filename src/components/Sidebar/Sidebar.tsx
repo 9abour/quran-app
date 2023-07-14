@@ -83,6 +83,7 @@ const Sidebar = () => {
 
 		if (surahsListFromLS != null) {
 			dispatch(updateSurahsList(JSON.parse(surahsListFromLS)));
+		} else {
 		}
 
 		setAyahOfTheDayFunc();
@@ -98,6 +99,7 @@ const Sidebar = () => {
 			);
 			const { data } = res;
 			localStorage.setItem("ayahOfTheDay", JSON.stringify(data));
+			setAyahOfTheDay(data);
 		} catch {
 			console.log(Error);
 		}
@@ -120,6 +122,8 @@ const Sidebar = () => {
 
 		if (ayahOfTheDayFromLS != null) {
 			setAyahOfTheDay(JSON.parse(ayahOfTheDayFromLS));
+		} else {
+			fetchAyah();
 		}
 	};
 
