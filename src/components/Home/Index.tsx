@@ -37,6 +37,7 @@ const Home = () => {
 	const [surahsListOriginal, setSurahsListOriginal] = useState<SurahType[]>([]);
 	const [surahsListToShow, setSurahsListToShow] = useState<SurahType[]>([]);
 	const [searchResults, setSearchResults] = useState<SurahType[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const surahsList = useAppSelector(state => state.listSlice.list);
 
@@ -69,6 +70,14 @@ const Home = () => {
 		} else {
 			setSurahsListToShow(surahsList);
 		}
+
+		setTimeout(() => {
+			if (surahsListToShow.length) {
+				setIsLoading(false);
+			} else {
+				setIsLoading(true);
+			}
+		}, 1000);
 	}, [sortBtnActive]);
 
 	useEffect(() => {
@@ -131,8 +140,10 @@ const Home = () => {
 					{" "}
 					&quot;{searchValue}&quot; does not match any results!
 				</h2>
-			) : (
+			) : isLoading ? (
 				<Loading />
+			) : (
+				<h2 className="text-center">No items!</h2>
 			)}
 		</div>
 	);
