@@ -202,7 +202,7 @@ const ReadCom = () => {
 								/>
 							</div>
 						</div>
-						<div className="w-[70rem] mx-auto h-[calc(100%-160px)] bg-slate-50 rounded-bl-lg rounded-br-lg">
+						<div className="max-w-[70rem] mx-auto h-[calc(100%-160px)] bg-slate-50 rounded-bl-lg rounded-br-lg">
 							<div className="flex justify-between items-center p-4 text-primary-gray">
 								<h3 className="text-xl font-semibold w-full">
 									{surah.englishName}
@@ -236,7 +236,7 @@ const ReadCom = () => {
 										key={ayah.number}
 									>
 										<h1
-											className={`text-2xl amiri-family ${
+											className={`text-xl md:text-2xl amiri-family ${
 												currentAyahNumber == ayah.number &&
 												"text-primary-color active"
 											} hover:text-primary-color cursor-pointer`}
