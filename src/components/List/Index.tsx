@@ -59,7 +59,7 @@ const Index = () => {
 				</div>
 			) : (
 				<h2 className="w-full text-xl font-semibold text-center">
-					There is no schedule to show!
+					There is no items to show!
 				</h2>
 			)}
 		</>
