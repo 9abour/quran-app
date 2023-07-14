@@ -130,7 +130,7 @@ html {
 
 @layer components {
 	.card {
-		@apply w-full lg:max-h-[450px] bg-white;
+		@apply w-full lg:max-h-[450px] bg-white py-4;
 		h1 {
 			@apply text-center text-xl font-semibold text-primary-gray;
 		}
