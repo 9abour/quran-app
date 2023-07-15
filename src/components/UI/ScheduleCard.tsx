@@ -14,7 +14,7 @@ export interface ScheduleCardType {
 	date: string;
 	text: string;
 	time: string;
-	completed?: boolean;
+	completed: boolean;
 }
 
 interface Props {
