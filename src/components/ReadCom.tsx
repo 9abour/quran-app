@@ -177,11 +177,11 @@ const ReadCom = () => {
 	};
 
 	return (
-		<div className="h-full grid justify-center items-center container mx-auto px-0 lg:px-4 lg:py-14 my-auto">
+		<div className="h-full grid items-center container mx-auto  lg:px-4 lg:py-14">
 			{surah ? (
 				<>
-					<div className="h-[1000px]">
-						<div className="flex justify-between items-center bg-gradient-to-l from-primary-color-5 to-primary-color max-w-[70rem] w-full h-40 mx-auto text-white p-4">
+					<div className="">
+						<div className="flex justify-between items-center bg-gradient-to-l from-primary-color-5 to-primary-color max-w-[70rem] w-full h-40 mx-auto text-white p-4 rounded-t-md">
 							<div className="p-3">
 								<h2 className="text-2xl font-semibold">
 									{surah?.name} - {surah?.englishName}
@@ -202,7 +202,7 @@ const ReadCom = () => {
 								/>
 							</div>
 						</div>
-						<div className="max-w-[70rem] mx-auto h-[calc(100%-160px)] bg-slate-50 rounded-bl-lg rounded-br-lg">
+						<div className="max-w-[70rem] mx-auto bg-slate-50 rounded-bl-lg rounded-br-lg">
 							<div className="flex justify-between items-center p-4 text-primary-gray">
 								<h3 className="text-xl font-semibold w-full">
 									{surah.englishName}
@@ -261,7 +261,7 @@ const ReadCom = () => {
 									</div>
 								))}
 							</div>
-							<div className="relative border-t-2 p-4 flex flex-col-reverse md:flex-row justify-between items-center gap-4 md:gap-12 bg-gradient-to-r from-primary-color-5 to-primary-color">
+							<div className="relative border-t-2 p-4 flex flex-col-reverse md:flex-row justify-between items-center gap-4 mb-4 lg:mb-0 md:gap-12 bg-gradient-to-r from-primary-color-5 to-primary-color rounded-b-md">
 								<div className="w-fit flex items-center gap-2 ">
 									<Link
 										href={
