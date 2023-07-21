@@ -1,4 +1,5 @@
 # Quran App
+![alt text](https://raw.githubusercontent.com/9abour/quran-app/master/Thumb.jpg)
 
 ## Features
 
